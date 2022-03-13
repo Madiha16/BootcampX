@@ -1,7 +1,32 @@
+--wk5d1 Group By and Having
+-- Now we just need to tell SQL that we want count(assignment_submissions.*) to be run for each students.name, instead of the entire query.
+-- To do this, we use the GROUP BY clause.
+SELECT students.name as student, count(assignment_submissions.*) as total_submissions
+FROM assignment_submissions
+JOIN students ON students.id = student_id
+GROUP BY students.name;
+-- Alter the query slightly to only return currently enrolled students.
+-- A currently enrolled student has a null end_date.
+SELECT students.name as student, count(assignment_submissions.*) as total_submissions
+FROM assignment_submissions
+JOIN students ON students.id = student_id
+WHERE end_date IS NULL
+GROUP BY students.name;
+-- Now that we know how to get the total submissions for currently enrolled students, let's refine the query a bit more.
+-- Let's only return currently enrolled students who's total submissions are less than 100;
+SELECT students.name as student, count(assignment_submissions.*) as total_submissions
+FROM assignment_submissions
+JOIN students ON students.id = student_id
+WHERE end_date IS NULL
+GROUP BY students.name
+HAVING count(assignment_submissions.*) < 100;
+
+
+
+--wk5d1 Joining Tables, last Question (Toggle for answer):
 -- Get the student's name, student's start_date, cohort's name, and cohort's start_date.
 -- Alias the column names to be more descriptive.
 -- Order by the start date of the cohort.
---wk5d1 Joining Tables, last Question (Toggle for answer):
 SELECT students.name as student_name,
 cohorts.name as cohort_name,
 cohorts.start_date as cohort_start_date,
